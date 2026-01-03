@@ -1,12 +1,12 @@
-use actix_web::{web, App, HttpRequest, HttpServer};
+use actix_web::{App, HttpRequest, HttpServer, web};
 use actix_web_opentelemetry::{PrometheusMetricsHandler, RequestMetrics, RequestTracing};
-use opentelemetry::{global, KeyValue};
+use opentelemetry::{KeyValue, global};
 use opentelemetry_otlp::WithExportConfig;
 use opentelemetry_sdk::{
+    Resource,
     metrics::{Aggregation, Instrument, SdkMeterProvider, Stream},
     propagation::TraceContextPropagator,
     trace::SdkTracerProvider,
-    Resource,
 };
 
 async fn index(_req: HttpRequest, _path: actix_web::web::Path<String>) -> &'static str {

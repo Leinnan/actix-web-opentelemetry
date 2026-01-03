@@ -1,8 +1,8 @@
 use actix_web_opentelemetry::ClientExt;
-use opentelemetry::{global, KeyValue};
+use opentelemetry::{KeyValue, global};
+use opentelemetry_sdk::Resource;
 use opentelemetry_sdk::propagation::TraceContextPropagator;
 use opentelemetry_sdk::trace::SdkTracerProvider;
-use opentelemetry_sdk::Resource;
 use std::error::Error;
 use std::io;
 

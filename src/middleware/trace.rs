@@ -1,16 +1,16 @@
 use std::{borrow::Cow, rc::Rc, task::Poll};
 
 use actix_web::{
+    Error,
     dev::{Service, ServiceRequest, ServiceResponse, Transform},
     http::header::HeaderMap,
-    Error,
 };
-use futures_util::future::{ok, FutureExt as _, LocalBoxFuture, Ready};
+use futures_util::future::{FutureExt as _, LocalBoxFuture, Ready, ok};
 use opentelemetry::{
+    KeyValue,
     global::{self},
     propagation::Extractor,
     trace::{FutureExt as OtelFutureExt, SpanKind, Status, TraceContextExt, Tracer},
-    KeyValue,
 };
 use opentelemetry_semantic_conventions::trace::HTTP_RESPONSE_STATUS_CODE;
 

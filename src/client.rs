@@ -2,7 +2,7 @@ use crate::{
     middleware::get_scope,
     util::{http_method_str, http_url},
 };
-use actix_http::{encoding::Decoder, BoxedPayloadStream, Error, Payload};
+use actix_http::{BoxedPayloadStream, Error, Payload, encoding::Decoder};
 use actix_web::{
     body::MessageBody,
     http::{
@@ -12,20 +12,21 @@ use actix_web::{
     web::Bytes,
 };
 use awc::{
+    ClientRequest, ClientResponse,
     error::SendRequestError,
     http::header::{CONTENT_LENGTH, USER_AGENT},
-    ClientRequest, ClientResponse,
 };
-use futures_util::{future::TryFutureExt as _, Future, Stream};
+use futures_util::{Future, Stream, future::TryFutureExt as _};
 use opentelemetry::{
-    global,
+    Context, KeyValue, global,
     propagation::Injector,
     trace::{SpanKind, Status, TraceContextExt, Tracer},
-    Context, KeyValue,
 };
+
+use opentelemetry_semantic_conventions::attribute::MESSAGING_MESSAGE_BODY_SIZE;
 use opentelemetry_semantic_conventions::trace::{
-    HTTP_REQUEST_METHOD, HTTP_RESPONSE_STATUS_CODE, MESSAGING_MESSAGE_BODY_SIZE, SERVER_ADDRESS,
-    SERVER_PORT, URL_FULL, USER_AGENT_ORIGINAL,
+    HTTP_REQUEST_METHOD, HTTP_RESPONSE_STATUS_CODE, SERVER_ADDRESS, SERVER_PORT, URL_FULL,
+    USER_AGENT_ORIGINAL,
 };
 use serde::Serialize;
 use std::mem;

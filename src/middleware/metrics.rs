@@ -7,16 +7,15 @@ use actix_http::{
 use actix_web::dev;
 use futures_util::future::{self, FutureExt as _, LocalBoxFuture};
 use opentelemetry::{
-    global,
+    KeyValue, global,
     metrics::{Histogram, Meter, MeterProvider, UpDownCounter},
-    KeyValue,
 };
 use std::borrow::Cow;
 use std::{sync::Arc, time::SystemTime};
 
 use super::get_scope;
-use crate::util::metrics_attributes_from_request;
 use crate::RouteFormatter;
+use crate::util::metrics_attributes_from_request;
 
 // Follows the experimental semantic conventions for HTTP metrics:
 // https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/semantic_conventions/http-metrics.md
@@ -192,10 +191,10 @@ impl Default for RequestMetrics {
 impl<S, B> dev::Transform<S, dev::ServiceRequest> for RequestMetrics
 where
     S: dev::Service<
-        dev::ServiceRequest,
-        Response = dev::ServiceResponse<B>,
-        Error = actix_web::Error,
-    >,
+            dev::ServiceRequest,
+            Response = dev::ServiceResponse<B>,
+            Error = actix_web::Error,
+        >,
     S::Future: 'static,
     B: MessageBody + 'static,
 {
@@ -229,10 +228,10 @@ pub struct RequestMetricsMiddleware<S> {
 impl<S, B> dev::Service<dev::ServiceRequest> for RequestMetricsMiddleware<S>
 where
     S: dev::Service<
-        dev::ServiceRequest,
-        Response = dev::ServiceResponse<B>,
-        Error = actix_web::Error,
-    >,
+            dev::ServiceRequest,
+            Response = dev::ServiceResponse<B>,
+            Error = actix_web::Error,
+        >,
     S::Future: 'static,
     B: MessageBody + 'static,
 {
